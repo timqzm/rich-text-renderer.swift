@@ -4,7 +4,7 @@ use_frameworks!
 platform :ios, "9.3"
 
 target 'RendererExample' do
-  pod 'Contentful'
+  pod 'Contentful', :git => 'https://github.com/timqzm/contentful.swift'
   pod 'ContentfulRichTextRenderer', :path => '../'
   
   target 'RendererExampleTests' do

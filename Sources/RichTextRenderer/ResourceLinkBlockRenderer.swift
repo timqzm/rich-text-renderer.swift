@@ -64,7 +64,7 @@ public struct ResourceLinkBlockRenderer: NodeRenderer {
 
     public func render(node: Node, renderer: RichTextRenderer, context: [CodingUserInfoKey: Any]) -> [NSMutableAttributedString] {
         let embeddedResourceNode = node as! ResourceLinkBlock
-        guard let resolvedResource = embeddedResourceNode.data.resolvedResource else { return [] }
+        guard let resolvedResource = embeddedResourceNode.data.target.flatResource else { return [] }
 
         let provider = context.styleConfig.viewProvider
 
