@@ -102,7 +102,8 @@ public struct RenderingConfiguration {
     ]
 
     public func headingAttributes(level: Int) -> [NSAttributedString.Key: Any] {
-        let safeLevel = level < fontsForHeadingLevels.count ? level : 0
+        let nonNegativeLevel = level - 1 >= 0 ? level - 1 : 0
+        let safeLevel = nonNegativeLevel < fontsForHeadingLevels.count ? nonNegativeLevel : fontsForHeadingLevels.count - 1
         return [.font: fontsForHeadingLevels[safeLevel]]
     }
 }
