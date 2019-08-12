@@ -37,9 +37,14 @@ public struct HorizontalRuleRenderer: NodeRenderer {
         let semaphore = DispatchSemaphore(value: 0)
         var hrView: View!
 
-        DispatchQueue.main.sync {
+        if Thread.isMainThread {
             hrView = provider.horizontalRule(context: context)
             semaphore.signal()
+        } else {
+            DispatchQueue.main.sync {
+                hrView = provider.horizontalRule(context: context)
+                semaphore.signal()
+            }
         }
         _ = semaphore.wait(timeout: DispatchTime.distantFuture)
 

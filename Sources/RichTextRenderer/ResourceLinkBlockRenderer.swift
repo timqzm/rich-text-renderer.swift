@@ -72,9 +72,14 @@ public struct ResourceLinkBlockRenderer: NodeRenderer {
 
         var view: View!
 
-        DispatchQueue.main.sync {
+        if Thread.isMainThread {
             view = provider.view(for: resolvedResource, context: context)
             semaphore.signal()
+        } else {
+            DispatchQueue.main.sync {
+                view = provider.view(for: resolvedResource, context: context)
+                semaphore.signal()
+            }
         }
         _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         var rendered = [NSMutableAttributedString(string: "\0", attributes: [.embed: view])] // use null character
