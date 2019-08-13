@@ -93,18 +93,28 @@ public struct RenderingConfiguration {
 
     /// The fonts for `Heading` nodes, levels 1-6.
     public var fontsForHeadingLevels: [Font] = [
-        Font.systemFont(ofSize: 24.0, weight: .semibold),
+        Font.systemFont(ofSize: 24, weight: .semibold),
         Font.systemFont(ofSize: 18, weight: .semibold),
         Font.systemFont(ofSize: 16, weight: .semibold),
         Font.systemFont(ofSize: 15, weight: .semibold),
         Font.systemFont(ofSize: 14, weight: .semibold),
         Font.systemFont(ofSize: 13, weight: .semibold)
     ]
+    
+    // dirty workaround to get bold marks in headers
+    public var fontsForHeadingLevelsBold: [Font] = [
+        Font.systemFont(ofSize: 24, weight: .bold),
+        Font.systemFont(ofSize: 18, weight: .bold),
+        Font.systemFont(ofSize: 16, weight: .bold),
+        Font.systemFont(ofSize: 15, weight: .bold),
+        Font.systemFont(ofSize: 14, weight: .bold),
+        Font.systemFont(ofSize: 13, weight: .bold)
+    ]
 
-    public func headingAttributes(level: Int) -> [NSAttributedString.Key: Any] {
+    public func headingAttributes(level: Int, bold: Bool) -> [NSAttributedString.Key: Any] {
         let nonNegativeLevel = level - 1 >= 0 ? level - 1 : 0
         let safeLevel = nonNegativeLevel < fontsForHeadingLevels.count ? nonNegativeLevel : fontsForHeadingLevels.count - 1
-        return [.font: fontsForHeadingLevels[safeLevel]]
+        return [.font: bold ? fontsForHeadingLevelsBold[safeLevel] : fontsForHeadingLevels[safeLevel]]
     }
 }
 

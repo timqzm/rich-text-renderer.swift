@@ -21,8 +21,22 @@ public struct HeadingRenderer: NodeRenderer {
             rendered.append(contentsOf: renderedChildren)
         }
 
-        rendered.forEach {
-            $0.addAttributes(context.styleConfig.headingAttributes(level: Int(heading.level)), range: NSRange(location: 0, length: $0.length))
+        rendered.forEach { str in
+            var range = NSRange(location: 0, length: str.length)
+            let oldFont = str.attribute(.font, at: 0, effectiveRange: &range) as? Font
+            let oldTraits = oldFont?.fontDescriptor.symbolicTraits
+            
+            // dirty workaround to get bold marks in headers
+            var bold = oldTraits?.contains(.traitBold) == true
+            var attributes = context.styleConfig.headingAttributes(level: Int(heading.level), bold: bold)
+            
+            if let newFont = attributes[.font] as? Font,
+                let oldTraits = oldTraits,
+                let descriptor = newFont.fontDescriptor.withSymbolicTraits(oldTraits) {
+                attributes[.font] = Font(descriptor: descriptor, size: newFont.pointSize)
+            }
+            
+            str.addAttributes(attributes, range: range)
         }
         rendered.applyListItemStylingIfNecessary(node: node, context: context)
         rendered.appendNewlineIfNecessary(node: node)
