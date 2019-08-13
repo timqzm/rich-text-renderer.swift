@@ -24,10 +24,14 @@ public struct TextRenderer: NodeRenderer {
         paragraphStyle.lineSpacing = renderingConfig.lineSpacing
         paragraphStyle.paragraphSpacing = renderingConfig.paragraphSpacing
 
-        let attributes: [NSAttributedString.Key: Any] = [
+        var attributes: [NSAttributedString.Key: Any] = [
             .font: font,
             .paragraphStyle: paragraphStyle
         ]
+        if text.marks.first(where: { $0.type == .underline }) != nil {
+            attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        }
+
         let attributedString = NSMutableAttributedString(string: text.value, attributes: attributes)
         return [attributedString]
     }

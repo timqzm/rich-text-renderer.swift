@@ -135,22 +135,23 @@ public struct DefaultRichTextRenderer: RichTextRenderer {
     public static func font(for textNode: Text, config: RenderingConfiguration) -> Font {
         let markTypes = textNode.marks.map { $0.type }
 
-        var font: Font?
+        var font = config.baseFont
 
-        if markTypes.contains(.bold) && markTypes.contains(.italic) {
-            font = config.baseFont.italicizedAndBolded()
-        } else if markTypes.contains(.bold) {
-            font = config.baseFont.bolded()
-        } else if markTypes.contains(.italic) {
-            font = config.baseFont.italicized()
-        } else if markTypes.contains(.code) {
-            font = config.baseFont.monospaced()
+        if markTypes.contains(.code), let mono = Font(name: "Menlo-Regular", size: config.baseFont.pointSize) {
+            font = mono
         }
-        if let font = font {
-            return font
-        } else {
-            // TODO: Log that no font was found for the relevant traits.
-            return config.baseFont
+
+        var traits = UIFontDescriptor.SymbolicTraits()
+        if markTypes.contains(.bold) {
+            traits.insert(.traitBold)
         }
+        if markTypes.contains(.italic) {
+            traits.insert(.traitItalic)
+        }
+        
+        if let descriptor = font.fontDescriptor.withSymbolicTraits(traits) {
+            return Font(descriptor: descriptor, size: config.baseFont.pointSize)
+        }
+        return font
     }
 }
