@@ -17,13 +17,13 @@ Pod::Spec.new do |spec|
                         :tag => spec.version.to_s }
   spec.requires_arc = true
   
-  spec.swift_version = '4.2'
+  spec.swift_version = '5.0'
   spec.ios.deployment_target = '9.3'
 
   spec.source_files = 'Sources/RichTextRenderer/*.swift'
   spec.ios.source_files = 'Sources/RichTextRenderer/UIKit/*.swift'
 
   spec.dependency 'AlamofireImage', '~> 3.4'
-  spec.dependency 'Contentful', '~> 5.0.0'
+  spec.dependency 'Contentful', '~> 5.0.5'
 end
 
