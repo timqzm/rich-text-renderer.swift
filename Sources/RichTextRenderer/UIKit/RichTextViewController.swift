@@ -21,11 +21,15 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
         didSet {
             guard let richText = richText else { return }
             let output = self.renderer.render(document: richText)
-            DispatchQueue.main.async {
-                self.textStorage.beginEditing()
-                self.textStorage.setAttributedString(output)
-                self.textStorage.endEditing()
-            }
+            setRenderedString(output)
+        }
+    }
+
+    public func setRenderedString(_ string: NSAttributedString) {
+        DispatchQueue.main.async {
+            self.textStorage.beginEditing()
+            self.textStorage.setAttributedString(output)
+            self.textStorage.endEditing()
         }
     }
 
