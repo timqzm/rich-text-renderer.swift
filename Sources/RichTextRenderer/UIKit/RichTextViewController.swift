@@ -50,7 +50,7 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
     public var textContainer: RichTextContainer!
 
     /// The insets from the text view to the text container.
-    public var textContainerInset: UIEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0) {
+    public var textContainerInset: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) {
         didSet {
             layoutManager.textContainerInset = textContainerInset
             textView.textContainerInset = textContainerInset
