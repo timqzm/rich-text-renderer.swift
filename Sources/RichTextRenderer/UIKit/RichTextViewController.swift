@@ -26,10 +26,16 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
     }
 
     public func setRenderedString(_ string: NSAttributedString) {
-        DispatchQueue.main.async {
-            self.textStorage.beginEditing()
-            self.textStorage.setAttributedString(string)
-            self.textStorage.endEditing()
+        if Thread.isMainThread {
+            textStorage.beginEditing()
+            textStorage.setAttributedString(string)
+            textStorage.endEditing()
+        } else {
+            DispatchQueue.main.sync {
+                textStorage.beginEditing()
+                textStorage.setAttributedString(string)
+                textStorage.endEditing()
+            }
         }
     }
 
