@@ -24,6 +24,6 @@ Pod::Spec.new do |spec|
   spec.ios.source_files = 'Sources/RichTextRenderer/UIKit/*.swift'
 
   spec.dependency 'AlamofireImage', '~> 3.4'
-  spec.dependency 'Contentful', '~> 5.1.0'
+  spec.dependency 'Contentful', '~> 5.4.0'
 end
 
