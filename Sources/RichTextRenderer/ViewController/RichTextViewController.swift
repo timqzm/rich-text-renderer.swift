@@ -19,7 +19,7 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
     private let renderer: RichTextDocumentRenderer
 
     /// The `renderer` renders `Contentful.RichTextDocument` into this view.
-    private var textView: UITextView!
+    public var textView: UITextView!
 
     /// The underlying text storage.
     private let textStorage = NSTextStorage()
@@ -132,11 +132,21 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
     private func renderDocumentIfNeeded() {
         guard let document = richTextDocument else { return }
 
-        DispatchQueue.main.async {
-            let output = self.renderer.render(document: document)
-            self.textStorage.beginEditing()
-            self.textStorage.setAttributedString(output)
-            self.textStorage.endEditing()
+        let output = self.renderer.render(document: document)
+        setRenderedString(output)
+    }
+
+    public func setRenderedString(_ string: NSAttributedString) {
+        if Thread.isMainThread {
+            textStorage.beginEditing()
+            textStorage.setAttributedString(string)
+            textStorage.endEditing()
+        } else {
+            DispatchQueue.main.sync {
+                textStorage.beginEditing()
+                textStorage.setAttributedString(string)
+                textStorage.endEditing()
+            }
         }
     }
 
