@@ -16,7 +16,7 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
     }
 
     /// Renderer of the `Contentful.RichTextDocument`.
-    private let renderer: RichTextDocumentRenderer
+    public let renderer: RichTextDocumentRenderer
 
     /// The `renderer` renders `Contentful.RichTextDocument` into this view.
     public var textView: UITextView!
